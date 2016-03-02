@@ -29,3 +29,5 @@ Add the following
 192.168.68.8 jenkins.domain.com
 
 Save and quit.
+
+Also, be sure that you do not have another process using 443 or 8080 port on your host. If so, change on vangrantfile to another available port.
