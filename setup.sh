@@ -19,8 +19,19 @@ echo "Updating package list and installing nginx............................"
 sudo apt-get update
 sudo apt-get install -y nginx
 
-#echo "Create SSL certificate.........................................."
-#sudo mkdir /etc/nginx/ssl
-#sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -subj "/C=BR/ST=AM/L=MAO/O=localdomain.com/CN=jenkins.localdomain"
+echo "Create SSL certificate.........................................."
+sudo mkdir -p /etc/nginx/ssl/jenkins.domain.com
+country="BR"
+state="AM"
+locality="Manaus"
+organization="verdes.net"
+organizationalunit="IT"
+email="admin@verdes.net"
+commonname="jenkins.domain.com"
+path="/etc/nginx/ssl/jenkins.domain.com" #path to save keys
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $path/server.key -out $path/server.crt -subj "/C=$country/ST=$state/L=$locality/O=$organization/OU=$organizationalunit/CN=$commonname"
 
-#sudo mv default /etc/nginx/sites-available/.
+sudo mv jenkins /etc/nginx/sites-available/.
+sudo ln -s -f /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo service nginx restart
